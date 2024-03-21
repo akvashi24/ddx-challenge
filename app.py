@@ -4,7 +4,7 @@ from pprint import pprint
 app = Flask(__name__)
 
 # ? Unclear if JSON file would be an object or list at the top level
-# Also unclear what should happen in the event of a tie, currently replaces 
+# Also unclear what should happen in the event of a tie, currently takes last candidate
 data = {
     "Pennsylvania": {
         "Chester": {
