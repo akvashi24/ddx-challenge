@@ -1,5 +1,6 @@
 from flask import Flask
-from pprint import pprint
+
+# Part 1
 
 app = Flask(__name__)
 
@@ -12,8 +13,8 @@ data = {
             "Republicans": {"Nixon": 20000, "Ashbrook": 200, "McCloskey": 100},
         },
         "Allegheny": {
-            "Democrats": {"Humphrey": 10000, "McGovern": 8090},
-            "Republicans": {"Nixon": 15000, "Ashbrook": 400, "McCloskey": 7000},
+            "Democrats": {"Humphrey": 10000, "McGovern": 5000},
+            "Republicans": {"Nixon": 7500, "Ashbrook": 5000},
         }
     },
     "New Jersey": {
@@ -51,5 +52,27 @@ def winners_by_state():
     result = {}
     for state, race in data.items():
         result[state] = get_state_winners(race)
-    pprint(result)
     return result
+
+# Part 2.
+
+# select county, party, candidate, max(votes) from results group by party, county;
+
+# Part 3: Say the data provider tells you JSON files will be arriving once an hour with incremental vote count updates.
+# You are tasked with architecting a system to load those files into the table from part 2 once they arrive.
+# In a paragraph or two, please answer the following
+# ● What does your ideal architecture look like to accomplish this?
+# ● What questions do you still need answered in order to build the system? 
+
+# A system that could update the table from part 2 periodically would not have to be very complicated to work effectively.
+# I would make some changes to the table schema first, and then set up an infrastructure for ingesting, cleaning, and
+# inserting the data.  First, I would need to understand how the files are coming in.  This could be via a REST API,
+# a file upload to a storage service like S3, direct transfer via SFTP, or even something as basic as email attachments.
+# I would also want to understand the fidelity of these files - is it possible or even likely that they would need to be
+# edited or amended?  Another question I would have is about reads and writes.  It's noted that writes would happen every hour,
+# but how many counties would be updating on the hour?  How many users would be attempting to read and how often?  This 
+# would all affect the infrastructure required to host a solution and certain implementation details about the availability
+# of the data.
+
+
+
